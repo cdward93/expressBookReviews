@@ -12,7 +12,7 @@ app.use("/customer",session({secret:"fingerprint_customer",resave: true, saveUni
 
 app.use("/customer/auth/*", function auth(req,res,next) {
 
-//Write the authenication mechanism here
+//Write the authentication mechanism here
 // Middleware for user authentication
 
     // Check if user is authenticated
@@ -45,4 +45,3 @@ app.use("/customer", customer_routes);
 app.use("/", genl_routes);
 
 app.listen(PORT,()=>console.log("ExpressBooks Server is running"));
-

@@ -14,16 +14,15 @@ public_users.post("/register", (req, res) => {
     }
   
     // Check if username is already taken
-    if (users.hasOwnProperty(username)) {
-      return res.status(404).json({ message: "Username already exists" });
-    }
-    
-    // Add the new user to the users object
-    users[username] = password;
-  
-    return res.status(200).json({ message: "User registered successfully" });
-  });
+    const found = users.some((user) => user.username === username);    
 
+    if (!found) {
+    // Add the new user to the users object
+        users.push({"username":username, "password":password});
+        return res.status(200).json({ message: "Customer registered successfully" });
+    }
+    else return res.status(409).json({ message: "Username already taken" });
+  })
 
 // Get the book list available in the shop
 public_users.get("/",(req,res)=>{
