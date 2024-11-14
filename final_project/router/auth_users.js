@@ -128,11 +128,7 @@ regd_users.delete("/auth/delete/:isbn", (req, res) => {
       return res.json({ message: 'Book not found' });
     }
   }
-}})
-
-
-
-
+}});
 
 
 module.exports.authenticated = regd_users;
