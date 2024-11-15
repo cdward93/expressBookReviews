@@ -46,7 +46,7 @@ regd_users.post("/login", (req, res) => {
         }
         return res.status(200).send(`Customer successfully logged in - username ${username}`);
     } else {
-        return res.status(208).json({ message: `${users} ::::: Invalid Login. Check username and password: username: ${username}, password: ${password}` });
+        return res.status(208).json({ message: `Invalid Login. Check username and password: username: ${username}, password: ${password}` });
     }
 });
 
@@ -120,7 +120,7 @@ regd_users.delete("/auth/delete/:isbn", (req, res) => {
     console.log("Book not found.");
   }
 
-  res.send({ message: "Delete successful!" });
+  res.send({ message: `Delete successful for ISBN ${isbn} by USER ${username}` });
 });
 
 module.exports.authenticated = regd_users;
