@@ -87,41 +87,33 @@ regd_users.put('/auth/review/:isbn', (req, res) => {
 
 
 regd_users.delete("/auth/delete/:isbn", (req, res) => {
-  const isbn = req.params.isbn;
-  const username = req.body.username;
-
-  let bookFound = false;
-
-  for (const key in books) { // Iterate through the books array
-    if (key === isbn.toString()) { // Check if we've found the desired ISBN
-      bookFound = true; // Mark it as found
-
-      if (!books[key].reviews || !Object.keys(books[key].reviews).length > 0) {
-        console.log(`No reviews for this book.`);
-      } else {
-        let newReviews = { ...books[isbn].reviews }; // Create a shallow clone of the reviews object
-        const reviewUsernames = Object.keys(newReviews); // Get an array of usernames
-
-        for (const username of reviewUsernames) { // Iterate over each review username
-          if (username === req.body.username) {
-            delete newReviews[username]; // Delete the review with that username
-            break; // stop searching once we find the correct review
+    const isbn = parseInt(req.params.isbn);
+    let bookFound = false;
+  
+    for (const key in books) { 
+      if (key === isbn.toString()) { 
+        bookFound = true;
+        
+        Object.keys(books[key].reviews).forEach(reviewId => {
+          if (books[key].reviews[reviewId].username === req.body.username) {
+            delete books[key].reviews[reviewId]; // Delete the review
+            return res.status(200).json({ message: `Review deleted successfully for ISBN ${req.params.isbn}` });
           }
-        }
+        });
+  
+        if (!Object.keys(books[key].reviews).length > 0) { 
+          console.log(`No reviews left for this book.`);
+         } else {
+          console.log(`Reviews still exist for this book.`);
+         }
+  
+      if (!bookFound) { // Check if the book was not found
+        console.log(`Book not found - isbn ${req.params.isbn}`);
+        return res.json({ message: 'Book not found' });
+       }
+     }
+  }});
 
-        books[isbn].reviews = newReviews; // Update the original reviews object
-
-        console.log(`Review deleted successfully!`);
-      }
-    }
-  }
-
-  if (!bookFound) {
-    console.log("Book not found.");
-  }
-
-  res.send({ message: "Delete successful!" });
-});
 
 module.exports.authenticated = regd_users;
 module.exports.isValid = isValid;

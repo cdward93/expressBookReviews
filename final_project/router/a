@@ -120,7 +120,7 @@ regd_users.delete("/auth/delete/:isbn", (req, res) => {
     console.log("Book not found.");
   }
 
-  res.send({ message: "Delete successful!" });
+  res.send({ message: `Delete successful for ISBN ${isbn} by USER ${username}` });
 });
 
 module.exports.authenticated = regd_users;
